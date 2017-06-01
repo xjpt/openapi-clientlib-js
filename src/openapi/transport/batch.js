@@ -70,6 +70,16 @@ function runBatchCall(serviceGroup, callList) {
     let authToken;
     for (let i = 0, call; call = callList[i]; i++) {
         let headers = call.options && call.options.headers;
+        const language = this.transport && this.transport.transport && this.transport.transport.language;
+
+        if ((!headers || !headers['Accept-Language']) && language) {
+            if (!headers) {
+                headers = {};
+            }
+
+            headers['Accept-Language'] = language + ', *;q=0.5';
+        }
+
         if (headers && headers.Authorization) {
             authToken = headers.Authorization;
 
